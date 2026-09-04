@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>NaviRide</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="NaviRide, bus service, Navi Mumbai, transportation, real-time tracking, bus booking, ride sharing, public transport" name="keywords">
+    <meta content="NaviRide is a transportation service offering real-time bus tracking, easy booking, and seamless travel across Navi Mumbai. Find buses, check schedules, and book your ride today!" name="description">
+
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Topbar Start -->
+    <div class="container-fluid bg-light pt-3 d-none d-lg-block">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 text-center text-lg-left mb-2 mb-lg-0">
+                    <div class="d-inline-flex align-items-center">
+                        <p><i class="fa fa-envelope mr-2"></i>navirideinfo@gmail.com</p>
+                        <p class="text-body px-3">|</p>
+                        <p><i class="fa fa-phone-alt mr-2"></i>+91 9136790046</p>
+                    </div>
+                </div>
+                <div class="col-lg-6 text-center text-lg-right">
+                    <div class="d-inline-flex align-items-center">
+                        <a class="text-primary px-3" href="https://www.instagram.com/navi.ride/" target="_blank" rel="noopener noreferrer">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Topbar End -->
+
+
+    <!-- Navbar Start -->
+    <div class="container-fluid position-relative nav-bar p-0">
+        <div class="container-lg position-relative p-0 px-lg-3" style="z-index: 9;">
+            <nav class="navbar navbar-expand-lg bg-light navbar-light shadow-lg py-3 py-lg-0 pl-3 pl-lg-5">
+                <a href="" class="navbar-brand">
+                    <img src="img/cropped_image.png" alt="Logo" style="height: 90px; margin-right: 3px;">
+                    <h1 class="m-0 text-primary" style="display: inline-block;">
+                        <span class="text-dark">Navi</span>
+                        <span style="color: orange;">Ride</span>
+                    </h1>
+                </a>
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-between px-3" id="navbarCollapse">
+                    <div class="navbar-nav ml-auto py-0">
+                        <a href="index.html" class="nav-item nav-link">Home</a>
+                        <a href="about.html" class="nav-item nav-link">About</a>
+                        <a href="service.html" class="nav-item nav-link">Services</a>
+                        <a href="package.html" class="nav-item nav-link active">Ticket Booking</a>
+                        <div class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">More</a>
+                            <div class="dropdown-menu border-0 rounded-0 m-0">
+                                <a href="destination.html" class="dropdown-item">Destination</a>
+                                <a href="Track.html" class="dropdown-item">Bus Tracker</a>
+
+                            </div>
+                        </div>
+                        <a href="contact.html" class="nav-item nav-link">Contact</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <!-- Navbar End -->
+
+
+    <!-- Header Start -->
+    <div class="container-fluid page-header">
+        <div class="container">
+            <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 400px">
+                <h3 class="display-4 text-white text-uppercase">Ticket Booking</h3>
+                <div class="d-inline-flex text-white">
+                    <p class="m-0 text-uppercase"><a class="text-white" href="index.html">Home</a></p>
+                    <i class="fa fa-angle-double-right pt-1 px-3"></i>
+                    <p class="m-0 text-uppercase">Ticket Booking</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Header End -->
+
+
+    <!-- Booking Start -->
+
+
+
+
+
+    <!-- Booking End -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <!-- Replace QR code library -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@latest/build/qrcode.min.js"></script>
+    <!-- Keep only one html2canvas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        
+        .booking-form {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 20px auto;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        select,
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        #totalPrice {
+            font-size: 1.2em;
+            margin: 20px 0;
+            font-weight: bold;
+            color: black;
+        }
+        
+        .ticket {
+            display: none;
+            background-color: #fff;
+            border: 2px solid #007bff;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .qr-code img {
+            width: 128px;
+            height: 128px;
+            margin: 0 auto;
+        }
+        
+        .download-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 16px;
+        }
+        
+        .razorpay-payment-button {
+            background-color: orange;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
+
+    <div class="booking-form">
+        <h2>Book Your Ticket</h2>
+        <div class="form-group">
+            <label>Departure:</label>
+            <select id="departure">
+            <option value="Bhingari">Bhingari</option>
+<option value="Bhingarwadi">Bhingarwadi</option>
+<option value="CBD Belapur">CBD Belapur</option>
+<option value="Chhatrapati Shivaji Maharaj University">Chhatrapati Shivaji Maharaj University</option>
+<option value="Chikhale Gaon">Chikhale Gaon</option>
+<option value="Derivali">Derivali</option>
+<option value="Hotel Rahul Park">Hotel Rahul Park</option>
+<option value="Karjat">Karjat</option>
+<option value="Khandacolony">Khandacolony</option>
+<option value="Kharghar">Kharghar</option>
+<option value="Khopoli">Khopoli</option>
+<option value="Kolkhe Gaon">Kolkhe Gaon</option>
+<option value="Kon Gaon">Kon Gaon</option>
+<option value="MGM College">MGM College</option>
+<option value="National Residency">National Residency</option>
+<option value="O.N.G.C.Kalundre">O.N.G.C.Kalundre</option>
+<option value="Orion Mall Panvel">Orion Mall Panvel</option>
+<option value="Palaspe Phata">Palaspe Phata</option>
+<option value="Panvel">Panvel</option>
+<option value="Panvel Bus Station/ Shivajinagar">Panvel Bus Station/ Shivajinagar</option>
+<option value="Panvel station Chowk">Panvel station Chowk</option>
+<option value="Raigad Petrol Pump Ajivali">Raigad Petrol Pump Ajivali</option>
+<option value="Shedung">Shedung</option>
+<option value="Shree Panchmukhi Hanuman Mandir">Shree Panchmukhi Hanuman Mandir</option>
+<option value="Takka Gaon Chowk">Takka Gaon Chowk</option>
+<option value="Thane">Thane</option>
+<option value="Thobrewadi">Thobrewadi</option>
+
+        </select>
+        </div>
+
+        <div class="form-group">
+            <label>Destination:</label>
+            <select id="destination">
+            <option value="Bhingari">Bhingari</option>
+<option value="Bhingarwadi">Bhingarwadi</option>
+<option value="CBD Belapur">CBD Belapur</option>
+<option value="Chhatrapati Shivaji Maharaj University">Chhatrapati Shivaji Maharaj University</option>
+<option value="Chikhale Gaon">Chikhale Gaon</option>
+<option value="Derivali">Derivali</option>
+<option value="Hotel Rahul Park">Hotel Rahul Park</option>
+<option value="Karjat">Karjat</option>
+<option value="Khandacolony">Khandacolony</option>
+<option value="Kharghar">Kharghar</option>
+<option value="Khopoli">Khopoli</option>
+<option value="Kolkhe Gaon">Kolkhe Gaon</option>
+<option value="Kon Gaon">Kon Gaon</option>
+<option value="MGM College">MGM College</option>
+<option value="National Residency">National Residency</option>
+<option value="O.N.G.C.Kalundre">O.N.G.C.Kalundre</option>
+<option value="Orion Mall Panvel">Orion Mall Panvel</option>
+<option value="Palaspe Phata">Palaspe Phata</option>
+<option value="Panvel">Panvel</option>
+<option value="Panvel Bus Station/ Shivajinagar">Panvel Bus Station/ Shivajinagar</option>
+<option value="Panvel station Chowk">Panvel station Chowk</option>
+<option value="Raigad Petrol Pump Ajivali">Raigad Petrol Pump Ajivali</option>
+<option value="Shedung">Shedung</option>
+<option value="Shree Panchmukhi Hanuman Mandir">Shree Panchmukhi Hanuman Mandir</option>
+<option value="Takka Gaon Chowk">Takka Gaon Chowk</option>
+<option value="Thane">Thane</option>
+<option value="Thobrewadi">Thobrewadi</option>
+
+        </select>
+        </div>
+
+        <div class="form-group">
+            <label>Travel Date:</label>
+            <input type="date" id="travelDate" required>
+        </div>
+
+        <div class="form-group">
+            <label>Passengers:</label>
+            <input type="number" id="passengers" min="1" value="1">
+        </div>
+
+        <div id="totalPrice">Total Price: ₹0</div>
+
+        <button class="razorpay-payment-button" type="button" onclick="handlePayment()">Pay Now</button>
+    </div>
+
+    <div id="ticket" class="ticket">
+        <h3>Your E-Ticket</h3>
+        <p class="ticket-time">Generated at: <span id="ticketTime"></span></p>
+        <p class="caution-message">Caution: Ticket valid for 5 hours from generation time</p>
+        <p>Departure: <span id="ticketDeparture"></span></p>
+        <p>Destination: <span id="ticketDestination"></span></p>
+        <p>Date: <span id="ticketDate"></span></p>
+        <p>Passengers: <span id="ticketPassengers"></span></p>
+        <p>Total Price: ₹<span id="ticketPrice"></span></p>
+        <div id="qrcode" class="qr-code"></div>
+        <button class="download-btn" onclick="downloadTicket()">Download Ticket</button>
+    </div>
+
+    <script>
+        // Price configuration
+        const prices = {
+            "Bhingari-Panvel": 15,
+            "Panvel-Bhingari": 15,
+            "Bhingarwadi-Panvel": 20,
+            "Panvel-Bhingarwadi": 20,
+            "CBD Belapur-Panvel": 25,
+            "Panvel-CBD Belapur": 25,
+            "Khopoli-Chhatrapati Shivaji Maharaj University": 1,
+            "CBD Belapur-Chhatrapati Shivaji Maharaj University": 55,
+            "Kharghar-Chhatrapati Shivaji Maharaj University": 25,
+            "Chhatrapati Shivaji Maharaj University-Panvel": 10,
+            "Panvel-Chhatrapati Shivaji Maharaj University": 10,
+            "Chikhale Gaon-Panvel": 18,
+            "Panvel-Chikhale Gaon": 18,
+            "Derivali-Panvel": 50,
+            "Panvel-Derivali": 50,
+            "Hotel Rahul Park-Panvel": 12,
+            "Panvel-Hotel Rahul Park": 12,
+            "Karjat-Panvel": 50,
+            "Panvel-Karjat": 50,
+            "Khandacolony-Panvel": 8,
+            "Panvel-Khandacolony": 8,
+            "Kharghar-Panvel": 20,
+            "Panvel-Kharghar": 20,
+            "Khopoli-Panvel": 55,
+            "Panvel-Khopoli": 55,
+            "Kolkhe Gaon-Panvel": 10,
+            "Panvel-Kolkhe Gaon": 10,
+            "Kon Gaon-Panvel": 30,
+            "Panvel-Kon Gaon": 30,
+            "MGM College-Panvel": 15,
+            "Panvel-MGM College": 15,
+            "National Residency-Panvel": 22,
+            "Panvel-National Residency": 22,
+            "O.N.G.C.Kalundre-Panvel": 18,
+            "Panvel-O.N.G.C.Kalundre": 18,
+            "Orion Mall Panvel-Panvel": 5,
+            "Panvel-Orion Mall Panvel": 5,
+            "Palaspe Phata-Panvel": 12,
+            "Panvel-Palaspe Phata": 12,
+            "Panvel Station Chowk-Panvel": 2,
+            "Panvel-Panvel Station Chowk": 2,
+            "Raigad Petrol Pump Ajivali-Panvel": 35,
+            "Panvel-Raigad Petrol Pump Ajivali": 35,
+            "Shedung-Panvel": 20,
+            "Panvel-Shedung": 20,
+            "Shree Panchmukhi Hanuman Mandir-Panvel": 25,
+            "Panvel-Shree Panchmukhi Hanuman Mandir": 25,
+            "Takka Gaon Chowk-Panvel": 10,
+            "Panvel-Takka Gaon Chowk": 10,
+            "Thane-Panvel": 40,
+            "Panvel-Thane": 40,
+            "Thobrewadi-Panvel": 45,
+            "Panvel-Thobrewadi": 45
+        };
+
+        // Set date restrictions
+        const dateInput = document.getElementById('travelDate');
+        const today = new Date().toISOString().split('T')[0];
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        dateInput.min = today;
+        dateInput.max = tomorrow.toISOString().split('T')[0];
+        dateInput.value = today;
+
+        // Calculate price
+        function calculatePrice() {
+            const departure = document.getElementById('departure').value;
+            const destination = document.getElementById('destination').value;
+            const passengers = document.getElementById('passengers').value;
+            const route = `${departure}-${destination}`;
+
+            const price = prices[route];
+            if (!price) {
+                alert('Please select a valid route');
+                return 0;
+            }
+
+            const total = price * passengers;
+            document.getElementById('totalPrice').textContent = `Total Price: ₹${total}`;
+            return total;
+        }
+
+        // Update price when any input changes
+        document.getElementById('departure').addEventListener('change', calculatePrice);
+        document.getElementById('destination').addEventListener('change', calculatePrice);
+        document.getElementById('passengers').addEventListener('input', calculatePrice);
+
+
+        // Initialize price calculation
+        calculatePrice();
+
+        // Payment handling
+        function handlePayment() {
+            const amount = calculatePrice() * 100;
+            const options = {
+                key: 'rzp_live_nCSamwrzmSCWOI',
+                amount: amount,
+                currency: 'INR',
+                name: 'NaviRide',
+                description: 'Ticket Payment',
+                handler: function(response) {
+                    showTicket();
+                    generateQRCode(); // Generate QR code after payment
+                },
+                prefill: {
+                    email: 'user@example.com',
+                    contact: ''
+                }
+            };
+
+            const rzp = new Razorpay(options);
+            rzp.open();
+        }
+        // Show ticket after payment
+        // Show ticket after payment
+        function showTicket() {
+            const ticket = document.getElementById('ticket');
+            ticket.style.display = 'block';
+
+            // Get current time and format it
+            const now = new Date();
+            const options = {
+                hour: 'numeric',
+                minute: 'numeric',
+                hour12: true,
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric'
+            };
+            document.getElementById('ticketTime').textContent =
+                now.toLocaleDateString('en-IN', options) + ' ' +
+                now.toLocaleTimeString('en-IN', options);
+
+            document.getElementById('ticketDeparture').textContent =
+                document.getElementById('departure').options[document.getElementById('departure').selectedIndex].text;
+            document.getElementById('ticketDestination').textContent =
+                document.getElementById('destination').options[document.getElementById('destination').selectedIndex].text;
+            document.getElementById('ticketDate').textContent = document.getElementById('travelDate').value;
+            document.getElementById('ticketPassengers').textContent = document.getElementById('passengers').value;
+            document.getElementById('ticketPrice').textContent = calculatePrice();
+        }
+
+        // Generate QR Code
+        function generateQRCode() {
+            const qr = document.getElementById('qrcode');
+            qr.innerHTML = ''; // Clear existing content
+
+            const ticketData = {
+                departure: document.getElementById('departure').value,
+                destination: document.getElementById('destination').value,
+                date: document.getElementById('travelDate').value,
+                passengers: document.getElementById('passengers').value,
+                price: calculatePrice(),
+                generatedTime: new Date().toISOString(),
+                validUntil: new Date(Date.now() + 5 * 60 * 60 * 1000).toISOString()
+            };
+
+            // Generate QR code as image
+            QRCode.toDataURL(JSON.stringify(ticketData), {
+                width: 128
+            }, (err, url) => {
+                if (err) {
+                    console.error('QR Code Error:', err);
+                    return;
+                }
+
+                const img = document.createElement('img');
+                img.src = url;
+                img.alt = 'QR Code';
+                qr.appendChild(img);
+            });
+
+
+            // Generate QR code
+            new QRCode(qr, {
+                text: JSON.stringify(ticketData), // Convert ticket data to a string
+                width: 128,
+                height: 128
+            });
+        }
+
+        // Download ticket
+        function downloadTicket() {
+            const qrImg = document.querySelector('#qrcode img');
+
+            if (!qrImg || !qrImg.complete) {
+                alert('Please wait for QR code to finish loading');
+                return;
+            }
+
+            html2canvas(document.querySelector("#ticket")).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'ticket.png';
+                link.href = canvas.toDataURL();
+                link.click();
+            });
+        }
+    </script>
+
+    <!-- Packages Start -->
+    <div class="container-fluid py-5">
+        <div class="container pt-5 pb-3">
+            <div class="text-center mb-3 pb-3">
+                <h6 class="text-primary text-uppercase" style="letter-spacing: 5px;">Schedule</h6>
+                <h1>Bus Timetable</h1>
+            </div>
+            <style>
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin: 20px 0;
+                }
+                
+                th,
+                td {
+                    border: 1px solid #ddd;
+                    padding: 8px;
+                    text-align: left;
+                }
+                
+                th {
+                    background-color: #f2f2f2;
+                }
+                
+                tr:nth-child(even) {
+                    background-color: #f9f9f9;
+                }
+            </style>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Route No.</th>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>Frequency</th>
+                            <th>First Bus</th>
+                            <th>Last Bus</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>101</td>
+                            <td>Khopoli</td>
+                            <td>Karjat</td>
+                            <td>Every 15 mins</td>
+                            <td>06:00 AM</td>
+                            <td>10:00 PM</td>
+                        </tr>
+                        <tr>
+                            <td>102</td>
+                            <td>Karjat</td>
+                            <td>Khopoli</td>
+                            <td>Every 20 mins</td>
+                            <td>05:30 AM</td>
+                            <td>09:30 PM</td>
+                        </tr>
+                        <tr>
+                            <td>103</td>
+                            <td>Belapur</td>
+                            <td>Shedung</td>
+                            <td>Every 30 mins</td>
+                            <td>06:15 AM</td>
+                            <td>10:15 PM</td>
+                        </tr>
+                        <tr>
+                            <td>104</td>
+                            <td>Shedung</td>
+                            <td>Belapur</td>
+                            <td>Every 20 mins</td>
+                            <td>05:45 AM</td>
+                            <td>09:45 PM</td>
+                        </tr>
+                        <tr>
+                            <td>105</td>
+                            <td>Nerul</td>
+                            <td>Vashi</td>
+                            <td>Every 10 mins</td>
+                            <td>06:00 AM</td>
+                            <td>11:00 PM</td>
+                        </tr>
+                        <tr>
+                            <td>106</td>
+                            <td>Vashi</td>
+                            <td>Nerul</td>
+                            <td>Every 15 mins</td>
+                            <td>06:30 AM</td>
+                            <td>10:30 PM</td>
+                        </tr>
+                        <tr>
+                            <td>107</td>
+                            <td>Kharghar</td>
+                            <td>Airoli</td>
+                            <td>Every 25 mins</td>
+                            <td>07:00 AM</td>
+                            <td>10:30 PM</td>
+                        </tr>
+                        <tr>
+                            <td>108</td>
+                            <td>Airoli</td>
+                            <td>Kharghar</td>
+                            <td>Every 30 mins</td>
+                            <td>07:15 AM</td>
+                            <td>11:00 PM</td>
+                        </tr>
+                        <tr>
+                            <td>109</td>
+                            <td>Kopar Khairane</td>
+                            <td>Juinagar</td>
+                            <td>Every 20 mins</td>
+                            <td>06:00 AM</td>
+                            <td>10:00 PM</td>
+                        </tr>
+                        <tr>
+                            <td>110</td>
+                            <td>Juinagar</td>
+                            <td>Kopar Khairane</td>
+                            <td>Every 25 mins</td>
+                            <td>06:30 AM</td>
+                            <td>10:30 PM</td>
+                        </tr>
+                        <tr>
+                            <td>111</td>
+                            <td>Seawoods</td>
+                            <td>Khandeshwar</td>
+                            <td>Every 15 mins</td>
+                            <td>05:45 AM</td>
+                            <td>09:45 PM</td>
+                        </tr>
+                        <tr>
+                            <td>112</td>
+                            <td>Khandeshwar</td>
+                            <td>Seawoods</td>
+                            <td>Every 30 mins</td>
+                            <td>06:00 AM</td>
+                            <td>10:00 PM</td>
+                        </tr>
+                        <tr>
+                            <td>113</td>
+                            <td>Ulwe</td>
+                            <td>Taloja</td>
+                            <td>Every 20 mins</td>
+                            <td>07:00 AM</td>
+                            <td>09:30 PM</td>
+                        </tr>
+                        <tr>
+                            <td>114</td>
+                            <td>Taloja</td>
+                            <td>Ulwe</td>
+                            <td>Every 30 mins</td>
+                            <td>07:15 AM</td>
+                            <td>10:00 PM</td>
+                        </tr>
+                        <tr>
+                            <td>115</td>
+                            <td>Dronagiri</td>
+                            <td>New Panvel</td>
+                            <td>Every 30 mins</td>
+                            <td>06:15 AM</td>
+                            <td>10:15 PM</td>
+                        </tr>
+                        <tr>
+                            <td>116</td>
+                            <td>New Panvel</td>
+                            <td>Dronagiri</td>
+                            <td>Every 15 mins</td>
+                            <td>06:00 AM</td>
+                            <td>11:00 PM</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Important Notes:</h3>
+            <ul>
+                <li>Schedules may vary on weekends and holidays</li>
+                <li>Timings subject to change due to traffic conditions</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Packages End -->
+
+
+    <!-- Destination Start -->
+
+    <!-- Destination Start -->
+
+
+    <!-- Footer Start -->
+    <div class="container-fluid bg-dark text-white-50 py-5 px-sm-3 px-lg-5" style="margin-top: 90px;">
+        <div class="row pt-5">
+            <div class="col-lg-3 col-md-6 mb-5">
+                <a href="" class="navbar-brand">
+                    <h1 class="text-primary"><span class="text-white">Navi</span>Ride</h1>
+                </a>
+                <p>NaviRide is committed to enhancing the way you travel within Navi Mumbai, offering a seamless and modern public transport experience. Our platform ensures convenience, safety, and efficiency, helping you reach your destination effortlessly.</p>
+                <h6 class="text-white text-uppercase mt-4 mb-3" style="letter-spacing: 5px;">Follow Us</h6>
+                <div class="d-flex justify-content-start">
+                    <a class="btn btn-outline-primary btn-square mr-2" href="#"><i class="fab fa-twitter"></i></a>
+                    <a class="btn btn-outline-primary btn-square mr-2" href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a class="btn btn-outline-primary btn-square mr-2" href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a class="btn btn-outline-primary btn-square" href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-5">
+                <h5 class="text-white text-uppercase mb-4" style="letter-spacing: 5px;">Our Services</h5>
+                <div class="d-flex flex-column justify-content-start">
+                    <a class="text-white-50 mb-2" href="about.html"><i class="fa fa-angle-right mr-2"></i>About</a>
+                    <a class="text-white-50 mb-2" href="destination.html"><i class="fa fa-angle-right mr-2"></i>Destination</a>
+                    <a class="text-white-50 mb-2" href="service.html"><i class="fa fa-angle-right mr-2"></i>Services</a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-5">
+                <h5 class="text-white text-uppercase mb-4" style="letter-spacing: 5px;">Usefull Links</h5>
+                <div class="d-flex flex-column justify-content-start">
+                    <a class="text-white-50 mb-2" href="about.html"><i class="fa fa-angle-right mr-2"></i>About</a>
+                    <a class="text-white-50 mb-2" href="destination.html"><i class="fa fa-angle-right mr-2"></i>Destination</a>
+                    <a class="text-white-50 mb-2" href="service.html"><i class="fa fa-angle-right mr-2"></i>Services</a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-5">
+                <h5 class="text-white text-uppercase mb-4" style="letter-spacing: 5px;">Contact Us</h5>
+                <p><i class="fa fa-map-marker-alt mr-2"></i>Panvel,Shedung,Navi Mumbai</p>
+                <p><i class="fa fa-phone-alt mr-2"></i>+91 9136790046</p>
+                <p><i class="fa fa-envelope mr-2"></i>navirideinfo@gmail.com</p>
+                <h6 class="text-white text-uppercase mt-4 mb-3" style="letter-spacing: 5px;">Newsletter</h6>
+                <div class="w-100">
+                    <div class="input-group">
+                        <input type="text" class="form-control border-light" style="padding: 25px;" placeholder="Your Email">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary px-3">Sign Up</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid bg-dark text-white border-top py-4 px-sm-3 px-md-5" style="border-color: rgba(256, 256, 256, .1) !important;">
+        <div class="row">
+            <div class="col-lg-6 text-center text-md-left mb-3 mb-md-0">
+                <p class="m-0 text-white-50">Copyright &copy; <a href="#">NaviRide</a>. All Rights Reserved.</a>
+                </p>
+            </div>
+            <div class="col-lg-6 text-center text-md-right">
+                <p class="m-0 text-white-50">Designed by Parth Singh</p>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="lib/tempusdominus/js/moment.min.js"></script>
+    <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
+    <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+
+    <!-- Contact Javascript File -->
+    <script src="mail/jqBootstrapValidation.min.js"></script>
+    <script src="mail/contact.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="js/main.js"></script>
+</body>
+
+</html>

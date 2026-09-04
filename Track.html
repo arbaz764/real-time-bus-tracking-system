@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>NaviRide -Bus Tracking</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"> 
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Topbar Start -->
+    <div class="container-fluid bg-light pt-3 d-none d-lg-block">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 text-center text-lg-left mb-2 mb-lg-0">
+                    <div class="d-inline-flex align-items-center">
+                        <p><i class="fa fa-envelope mr-2"></i>info@example.com</p>
+                        <p class="text-body px-3">|</p>
+                        <p><i class="fa fa-phone-alt mr-2"></i>+012 345 6789</p>
+                    </div>
+                </div>
+                <div class="col-lg-6 text-center text-lg-right">
+                    <div class="d-inline-flex align-items-center">
+                        <a class="text-primary px-3" href="https://www.instagram.com/navi.ride/" target="_blank" rel="noopener noreferrer">
+                            <i class="fab fa-instagram"></i>
+                        </a>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Topbar End -->
+
+
+    <!-- Navbar Start -->
+    <div class="container-fluid position-relative nav-bar p-0">
+        <div class="container-lg position-relative p-0 px-lg-3" style="z-index: 9;">
+            <nav class="navbar navbar-expand-lg bg-light navbar-light shadow-lg py-3 py-lg-0 pl-3 pl-lg-5">
+                <a href="" class="navbar-brand">
+                    <img src="img/cropped_image.png" alt="Logo" style="height: 90px; margin-right: 3px;">
+                    <h1 class="m-0 text-primary" style="display: inline-block;">
+                        <span class="text-dark">Navi</span>
+                        <span style="color: orange;">Ride</span>
+                    </h1>
+                </a>
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-between px-3" id="navbarCollapse">
+                    <div class="navbar-nav ml-auto py-0">
+                        <a href="index.html" class="nav-item nav-link">Home</a>
+                        <a href="about.html" class="nav-item nav-link">About</a>
+                        <a href="service.html" class="nav-item nav-link">Services</a>
+                        <a href="package.html" class="nav-item nav-link">Ticket Booking</a>
+                        <div class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle active" data-toggle="dropdown">More</a>
+                            <div class="dropdown-menu border-0 rounded-0 m-0">
+                                <a href="destination.html" class="dropdown-item">Destination</a>
+                                <a href="Track.html" class="dropdown-item">Bus Tracker</a>
+                           
+                            </div>
+                        </div>
+                        <a href="contact.html" class="nav-item nav-link">Contact</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <!-- Navbar End -->
+
+
+    <!-- Header Start -->
+    <div class="container-fluid page-header">
+        <div class="container">
+            <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 400px">
+                <h3 class="display-4 text-white text-uppercase">Bus Tracker</h3>
+                <div class="d-inline-flex text-white">
+                    <p class="m-0 text-uppercase"><a class="text-white" href="">Home</a></p>
+                    <i class="fa fa-angle-double-right pt-1 px-3"></i>
+                    <p class="m-0 text-uppercase">Bus Tracker</p>
+                </div>
+            </div>
+        </div>
+    <style>
+        /* General styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .map-container {
+            height: 500px;
+            border-radius: 8px;
+        }
+
+        .suggestions {
+            position: absolute;
+            z-index: 1000;
+            background: white;
+            width: 100%;
+        }
+
+        .suggestion-item {
+            padding: 8px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+        }
+
+        .suggestion-item:hover {
+            background: #f5f5f5;
+        }
+
+        .results-card {
+            margin-top: 20px;
+        }
+
+        /* Orange Theme Styling */
+        .search-card {
+            background: #fff3e0;
+            border: 2px solid #ff9800;
+            border-radius: 10px;
+        }
+
+        .results-card {
+            border: 2px solid #ff9800;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .card-header.bg-info {
+            background-color: #ff9800 !important;
+            border-bottom: 2px solid #e65100;
+        }
+
+        .btn-primary {
+            background-color: #ff9800;
+            border-color: #e65100;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #e65100;
+            border-color: #bf360c;
+            transform: translateY(-1px);
+        }
+
+        .suggestion-item {
+            padding: 10px;
+            transition: all 0.2s ease;
+            background: #fff3e0;
+        }
+
+        .suggestion-item:hover {
+            background: #ffe0b2 !important;
+            transform: translateX(5px);
+        }
+
+        .list-group-item {
+            border-left: 3px solid #ff9800 !important;
+            margin: 5px 0;
+            transition: all 0.3s ease;
+        }
+
+        .list-group-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 2px 8px rgba(255,152,0,0.2);
+        }
+
+        #routeInfo {
+            border: 2px solid #ff9800;
+            background: #fff3e0;
+        }
+
+        .map-container {
+            border: 2px solid #ff9800;
+            box-shadow: 0 4px 12px rgba(255,152,0,0.1);
+        }
+
+        /* Input focus effects */
+        .form-control:focus {
+            border-color: #ff9800;
+            box-shadow: 0 0 0 0.2rem rgba(255,152,0,0.25);
+        }
+
+        /* Media Queries for Responsiveness */
+        @media (max-width: 768px) {
+            .search-card {
+                padding: 15px;
+            }
+
+            .search-card .row {
+                flex-direction: column;
+            }
+
+            .search-card .col-md-5,
+            .search-card .col-md-2 {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .col-md-4, .col-md-8 {
+                width: 100%;
+            }
+
+            .map-container {
+                height: 350px;
+            }
+
+            .results-card {
+                margin-top: 15px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .btn-primary {
+                font-size: 14px;
+                padding: 10px;
+            }
+
+            .results-card {
+                padding: 10px;
+            }
+
+            .card-header h5 {
+                font-size: 16px;
+            }
+
+            #routeInfo {
+                font-size: 14px;
+            }
+        }
+
+    </style>
+    <style>
+        /* Enhanced Styling */
+        body {
+            background: #f8f9fa;
+            color: #2d3436;
+        }
+    
+        .search-card {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            border: 2px solid #ff9800;
+            border-radius: 15px;
+            box-shadow: 0 8px 24px rgba(255,152,0,0.1);
+        }
+    
+        .card-header.bg-info {
+            background: linear-gradient(135deg, #ff9800 0%, #e65100 100%) !important;
+            font-size: 1.2rem;
+            letter-spacing: 0.5px;
+        }
+    
+        .btn-primary {
+            background: linear-gradient(135deg, #ff9800 0%, #e65100 100%);
+            border: none;
+            padding: 12px 24px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+    
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(230,81,0,0.3);
+        }
+    
+        .list-group-item {
+            border-left: 4px solid #ff9800 !important;
+            margin: 8px 0;
+            border-radius: 8px !important;
+            padding: 1.25rem;
+            background: white;
+            transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+        }
+    
+        .list-group-item:hover {
+            transform: translateX(8px);
+            box-shadow: 0 4px 12px rgba(255,152,0,0.15);
+        }
+    
+        #routeInfo {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            border: 2px solid #ff9800;
+            border-radius: 12px;
+            font-size: 1.1rem;
+        }
+    
+        .map-container {
+            border: 3px solid #ff9800;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(255,152,0,0.1);
+        }
+    
+        .suggestion-item {
+            padding: 12px;
+            background: rgba(255,255,255,0.95);
+            border-bottom: 1px solid #ffe0b2;
+            backdrop-filter: blur(4px);
+            border-radius: 8px;
+            margin: 4px 0;
+        }
+    
+        .form-control {
+            border: 2px solid #ffe0b2;
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 1rem;
+        }
+    
+        .form-control:focus {
+            border-color: #ff9800;
+            box-shadow: 0 0 0 3px rgba(255,152,0,0.2);
+        }
+    
+        /* Enhanced Route Info Styling */
+        .route-info-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+    
+        .route-info-card h5 {
+            color: #e65100;
+            margin-bottom: 1rem;
+        }
+    
+        /* Modern Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+    
+        ::-webkit-scrollbar-track {
+            background: #ffe0b2;
+        }
+    
+        ::-webkit-scrollbar-thumb {
+            background: #ff9800;
+            border-radius: 4px;
+        }
+        .spinner-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255,255,255,0.9);
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .spinner {
+        width: 50px;
+        height: 50px;
+        border: 4px solid #ffe0b2;
+        border-top: 4px solid #ff9800;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid py-5">
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col-md-12">
+                    <div class="search-card p-4 shadow">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label class="font-weight-bold">Departure From</label>
+                                    <input type="text" id="departure" class="form-control" 
+                                           placeholder="Start typing (e.g., CBD Belapur)" 
+                                           oninput="searchStations('departure')">
+                                    <div id="departureSuggestions" class="suggestions"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label class="font-weight-bold">Destination To</label>
+                                    <input type="text" id="destination" class="form-control" 
+                                           placeholder="Start typing (e.g., Karjat)" 
+                                           oninput="searchStations('destination')">
+                                    <div id="destinationSuggestions" class="suggestions"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-2 d-flex align-items-end">
+                                <button class="btn btn-primary btn-block" onclick="findBuses()">Search</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card results-card shadow">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="mb-0">Available Bus Routes</h5>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="list-group" id="busResults"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div id="map" class="map-container shadow"></div>
+                    <div id="routeInfo" class="mt-3 p-3 bg-light rounded"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
+
+    <script>
+        // Extended NMMT Bus Stops Data
+        const nmmtStops = [
+    {"name": "Bhingari", "lat": 18.9900, "lng": 73.1100},
+    {"name": "Bhingarwadi", "lat": 18.9500, "lng": 73.1800},
+    {"name": "CBD Belapur", "lat": 19.0222, "lng": 73.0395},
+    {"name": "Chhatrapati Shivaji Maharaj University", "lat": 18.9494, "lng": 73.1762},
+    {"name": "Chikhale Gaon", "lat": 18.9000, "lng": 73.1500},
+    {"name": "Derivali", "lat": 18.8500, "lng": 73.2000},
+    {"name": "Hotel Rahul Park", "lat": 18.9900, "lng": 73.1200},
+    {"name": "Karjat", "lat": 18.9100, "lng": 73.3235},
+    {"name": "Khandacolony", "lat": 19.0000, "lng": 73.1000},
+    {"name": "Kharghar", "lat": 19.0330, "lng": 73.0700},
+    {"name": "Khopoli", "lat": 18.7856, "lng": 73.3451},
+    {"name": "Kolkhe Gaon", "lat": 18.9500, "lng": 73.1000},
+    {"name": "Kon Gaon", "lat": 19.2000, "lng": 73.1500},
+    {"name": "MGM College", "lat": 19.0300, "lng": 73.0700},
+    {"name": "National Residency", "lat": 18.9800, "lng": 73.1100},
+    {"name": "O.N.G.C. Kalundre", "lat": 18.9800, "lng": 73.1300},
+    {"name": "Orion Mall Panvel", "lat": 18.9900, "lng": 73.1200},
+    {"name": "Palaspe Phata", "lat": 18.9500, "lng": 73.1100},
+    {"name": "Panvel", "lat": 18.9894, "lng": 73.1175},
+    {"name": "Panvel Bus Station / Shivajinagar", "lat": 18.9900, "lng": 73.1200},
+    {"name": "Panvel Station Chowk", "lat": 18.9900, "lng": 73.1200},
+    {"name": "Raigad Petrol Pump Ajivali", "lat": 18.9500, "lng": 73.1500},
+    {"name": "Shedung", "lat": 18.9500, "lng": 73.1800},
+    {"name": "Shree Panchmukhi Hanuman Mandir", "lat": 18.9800, "lng": 73.1200},
+    {"name": "Takka Gaon Chowk", "lat": 18.9900, "lng": 73.1100},
+    {"name": "Thane", "lat": 19.2183, "lng": 72.9781},
+    {"name": "Thobrewadi", "lat": 18.9500, "lng": 73.1800}  
+        ];
+
+        // Enhanced Bus Routes Data
+        const busRoutes = {
+            "NMMT 101": {
+                stops: ["CBD Belapur Station", "Vashi Station", "Sanpada Station", "Nerul Station"],
+                timings: ["06:00", "07:30", "09:00", "10:30", "12:00", "13:30", "15:00", "16:30", "18:00", "19:30", "21:00"],
+                frequency: "Every 30 minutes"
+            },
+            "NMMT 202": {
+                stops: ["Karjat Station", "Panvel Station", "Kharghar Station", "CBD Belapur Station"],
+               timings: ["05:00", "06:30", "08:00", "09:30", "11:00", "12:30", "14:00", "15:30", "17:00", "18:30", "20:00", "21:30"],
+                frequency: "Every 1.5 hours"
+            }
+        };
+
+        let map;
+        let routingControl;
+
+        function initMap() {
+            // Initialize Leaflet map centered on Navi Mumbai
+            map = L.map('map').setView([19.0330, 73.0156], 12);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+            // Add markers for all NMMT stops
+            nmmtStops.forEach(stop => {
+                L.marker([stop.lat, stop.lng])
+                    .bindPopup(`<b>${stop.name}</b>`)
+                    .addTo(map);
+            });
+        }
+
+        function searchStations(field) {
+            const input = document.getElementById(field).value.toLowerCase();
+            const suggestions = nmmtStops.filter(stop => 
+                stop.name.toLowerCase().includes(input)
+            ).slice(0, 5);
+
+            const suggestionHTML = suggestions.map(stop => 
+                `<div class="suggestion-item" onclick="selectStation('${field}', '${stop.name}', ${stop.lat}, ${stop.lng})">
+                    ${stop.name}
+                </div>` 
+            ).join('');
+
+            document.getElementById(field + 'Suggestions').innerHTML = suggestionHTML;
+        }
+
+        function selectStation(field, name, lat, lng) {
+            document.getElementById(field).value = name;
+            document.getElementById(field + 'Suggestions').innerHTML = '';
+
+            // Add temporary marker for selected station
+            L.marker([lat, lng], {color: 'red', riseOnHover: true})
+                .bindPopup(`<b>Selected ${field}:</b> ${name}`)
+                .addTo(map)
+                .openPopup();
+        }
+
+        function findBuses() {
+            const departure = document.getElementById('departure').value;
+            const destination = document.getElementById('destination').value;
+
+            // Clear previous route
+            if(routingControl) {
+                map.removeControl(routingControl);
+            }
+
+            // Find coordinates for selected locations
+            const depStop = nmmtStops.find(s => s.name === departure);
+            const destStop = nmmtStops.find(s => s.name === destination);
+
+            if (depStop && destStop) {
+                routingControl = L.Routing.control({
+                    waypoints: [
+                        L.latLng(depStop.lat, depStop.lng),
+                        L.latLng(destStop.lat, destStop.lng)
+                    ],
+                    routeWhileDragging: true
+                }).addTo(map);
+            }
+
+            // Display available bus routes
+            let availableRoutesHTML = '';
+            for (const [route, details] of Object.entries(busRoutes)) {
+                availableRoutesHTML += `<div class="list-group-item">
+                                            <strong>${route}</strong><br>
+                                            Stops: ${details.stops.join(', ')}<br>
+                                            Timings: ${details.timings.join(', ')}<br>
+                                            Frequency: ${details.frequency}
+                                        </div>`;
+            }
+
+            document.getElementById('busResults').innerHTML = availableRoutesHTML;
+        }
+
+        // Initialize map on page load
+        initMap();
+    </script>
+    <script>
+        
+    </script>
+
+
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="lib/tempusdominus/js/moment.min.js"></script>
+    <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
+    <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+
+    <script src="mail/jqBootstrapValidation.min.js"></script>
+    <script src="mail/contact.js"></script>
+
+     <script src="js/main.js"></script>
+    
+</body>
+
+</html>
