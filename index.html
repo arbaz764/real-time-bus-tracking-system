@@ -1,998 +1,259 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="utf-8">
-    <title>NaviRide</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="NaviRide, bus service, Navi Mumbai, transportation, real-time tracking, bus booking, ride sharing, public transport" name="keywords">
-    <meta content="NaviRide is a transportation service offering real-time bus tracking, easy booking, and seamless travel across Navi Mumbai. Find buses, check schedules, and book your ride today!" name="description">
-
-
-    <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
-
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-
-    <!-- Libraries Stylesheet -->
-    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
-
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="css/style.css" rel="stylesheet">
+    <title>Admin-Only Community Chat</title>
+    <style>
+        /* Chat Container */
+        
+        #chat-container {
+            max-width: 600px;
+            width: 90%;
+            margin: 20px auto;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #ffffff, #f0f0f0);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        /* Chat Messages Area */
+        
+        #chat-messages {
+            height: 400px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            background: #ffffff;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.05);
+            scroll-behavior: smooth;
+        }
+        /* Individual Message Styling */
+        
+        .message {
+            margin-bottom: 12px;
+            padding: 10px 15px;
+            border-radius: 6px;
+            background-color: #f8f9fa;
+            font-size: 14px;
+            color: #333;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+        /* Admin Message Styling */
+        
+        .admin-message {
+            background-color: #007bff;
+            color: #fff;
+            align-self: flex-start;
+        }
+        /* User Message Styling */
+        
+        .user-message {
+            background-color: #4caf50;
+            color: #fff;
+            align-self: flex-end;
+        }
+        /* Message Alignment */
+        
+        .message-container {
+            display: flex;
+            justify-content: flex-start;
+        }
+        
+        .user-message-container {
+            justify-content: flex-end;
+        }
+        /* Media Preview */
+        
+        .media-preview {
+            max-width: 100%;
+            max-height: 200px;
+            margin-top: 5px;
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        /* Admin Controls */
+        
+        #admin-controls {
+            display: none;
+            margin-top: 15px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+        /* Responsive Design */
+        
+        @media (max-width: 768px) {
+            #chat-container {
+                width: 95%;
+                padding: 15px;
+            }
+            #chat-messages {
+                height: 300px;
+            }
+        }
+    </style>
 </head>
 
 <body>
-    <!-- Topbar Start -->
-    <div class="container-fluid bg-light pt-3 d-none d-lg-block">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 text-center text-lg-left mb-2 mb-lg-0">
-                    <div class="d-inline-flex align-items-center">
-                        <p><i class="fa fa-envelope mr-2"></i>navirideinfo@gmail.com</p>
-                        <p class="text-body px-3">|</p>
-                        <p><i class="fa fa-phone-alt mr-2"></i>+91 9136790046</p>
-                    </div>
-                </div>
-                <div class="col-lg-6 text-center text-lg-right">
-                    <div class="d-inline-flex align-items-center">
-                        <a class="text-primary px-3" href="https://www.instagram.com/navi.ride/" target="_blank" rel="noopener noreferrer">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
+    <div id="chat-container">
+        <div id="chat-messages"></div>
+
+        <!-- Admin Controls (visible only after auth) -->
+        <div id="admin-controls">
+            <textarea id="message-input" placeholder="Type your message..." rows="3"></textarea>
+            <button onclick="sendMessage()">Send Message</button>
+            <input type="file" id="media-upload" accept="image/*, video/*" multiple>
+            <button onclick="uploadMedia()">Upload Media</button>
         </div>
-    </div>
-    <!-- Topbar End -->
 
-
-    <!-- Navbar Start -->
-    <div class="container-fluid position-relative nav-bar p-0">
-        <div class="container-lg position-relative p-0 px-lg-3" style="z-index: 9;">
-            <nav class="navbar navbar-expand-lg bg-light navbar-light shadow-lg py-3 py-lg-0 pl-3 pl-lg-5">
-                <a href="" class="navbar-brand">
-                    <img src="img/cropped_image.png" alt="Logo" style="height: 80px; margin-right: 1px;">
-                    <h1 class="m-0 text-primary" style="display: inline-block;">
-                        <span class="text-dark">Navi</span>
-                        <span style="color: orange;">Ride</span>
-                    </h1>
-                </a>
-
-
-                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse justify-content-between px-3" id="navbarCollapse">
-                    <div class="navbar-nav ml-auto py-0">
-                        <a href="index.html" class="nav-item nav-link active">Home</a>
-                        <a href="about.html" class="nav-item nav-link">About</a>
-                        <a href="service.html" class="nav-item nav-link">Services</a>
-                        <a href="package.html" class="nav-item nav-link">Ticket Booking</a>
-                        <div class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">More</a>
-                            <div class="dropdown-menu border-0 rounded-0 m-0">
-                                <a href="destination.html" class="dropdown-item">Destination</a>
-                                <a href="Track.html" class="dropdown-item">Bus Tracker</a>
-
-                            </div>
-                        </div>
-                        <a href="contact.html" class="nav-item nav-link">Contact</a>
-                    </div>
-                </div>
-            </nav>
-        </div>
-    </div>
-    <!-- Navbar End -->
-
-
-    <!-- Carousel Start -->
-    <div class="container-fluid p-0">
-        <div id="header-carousel" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img class="w-100" src="img/ST.jpg" alt="Image">
-                    <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
-                        <div class="p-3" style="max-width: 900px;">
-                            <h4 class="text-white text-uppercase mb-md-3">NaviRide – Smart Public Transport Solution</h4>
-                            <h1 class="display-3 text-white mb-md-4">Ride with us, and stay ahead of time.</h1>
-                            <a href="package.html" class="btn btn-primary py-md-3 px-md-5 mt-2">Book Now</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <img class="w-100" src="img/Bus-public-transport_d_d.jpg" alt="Image">
-                    <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
-                        <div class="p-3" style="max-width: 900px;">
-                            <h4 class="text-white text-uppercase mb-md-3">NaviRide – The Future of Urban Mobility</h4>
-                            <h1 class="display-3 text-white mb-md-4">Seamless Travel, Smarter Journeys.</h1>
-                            <a href="package.html" class="btn btn-primary py-md-3 px-md-5 mt-2">Book Now</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <a class="carousel-control-prev" href="#header-carousel" data-slide="prev">
-                <div class="btn btn-dark" style="width: 45px; height: 45px;">
-                    <span class="carousel-control-prev-icon mb-n2"></span>
-                </div>
-            </a>
-            <a class="carousel-control-next" href="#header-carousel" data-slide="next">
-                <div class="btn btn-dark" style="width: 45px; height: 45px;">
-                    <span class="carousel-control-next-icon mb-n2"></span>
-                </div>
-            </a>
-        </div>
-    </div>
-    <!-- Carousel End -->
-
-
-    <!-- Booking Start -->
-    <!-- <div class="container-fluid booking mt-5 pb-5">
-        <div class="container pb-5">
-            <div class="bg-light shadow" style="padding: 30px;">
-                <div class="row align-items-center" style="min-height: 60px;">
-                  
-                    <div class="col-md-3">
-                        <div class="mb-3 mb-md-0">
-                            <select class="custom-select px-4" style="height: 47px;">
-                                <option selected>Departure</option>
-                                <option value="1">Khopoli</option>
-                                <option value="2">Karjat</option>
-                                <option value="3">Shedung</option>
-                                <option value="4">Belapur</option>
-                                <option value="5">Nerul</option>
-                                <option value="6">Vashi</option>
-                                <option value="7">CBD Belapur</option>
-                                <option value="8">Panvel</option>
-                                <option value="9">Kharghar</option>
-                                <option value="10">Airoli</option>
-                                <option value="11">Kopar Khairane</option>
-                                <option value="12">Juinagar</option>
-                                <option value="13">Seawoods</option>
-                                <option value="14">Khandeshwar</option>
-                                <option value="15">Ulwe</option>
-                                <option value="16">Taloja</option>
-                                <option value="17">Dronagiri</option>
-                                <option value="18">New Panvel</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="mb-3 mb-md-0">
-                            <select class="custom-select px-4" style="height: 47px;">
-                                <option selected>Destination</option>
-                                <option value="1">Khopoli</option>
-                                <option value="2">Karjat</option>
-                                <option value="3">Shedung</option>
-                                <option value="4">Belapur</option>
-                                <option value="5">Nerul</option>
-                                <option value="6">Vashi</option>
-                                <option value="7">CBD Belapur</option>
-                                <option value="8">Panvel</option>
-                                <option value="9">Kharghar</option>
-                                <option value="10">Airoli</option>
-                                <option value="11">Kopar Khairane</option>
-                                <option value="12">Juinagar</option>
-                                <option value="13">Seawoods</option>
-                                <option value="14">Khandeshwar</option>
-                                <option value="15">Ulwe</option>
-                                <option value="16">Taloja</option>
-                                <option value="17">Dronagiri</option>
-                                <option value="18">New Panvel</option>
-                                
-                            </select>
-                        </div>
-                    </div>
-                    
-
-                    <div class="col-md-3">
-                        <div class="mb-3 mb-md-0">
-                            <div class="date" id="date1" data-target-input="nearest">
-                                <input type="text" class="form-control p-4 datetimepicker-input" placeholder="Depart Date" data-target="#date1" data-toggle="datetimepicker"/>
-                            </div>
-                        </div>
-                    </div>
-                    
-  
-                    <div class="col-md-3">
-                        <div class="mb-3 mb-md-0">
-                            <select class="custom-select px-4" style="height: 47px;">
-                                <option selected>No. of Travelers</option>
-                                <option value="1">1 Traveler</option>
-                                <option value="2">2 Travelers</option>
-                                <option value="3">3 Travelers</option>
-                                <option value="4">4 Travelers</option>
-                                <option value="5">5 Travelers</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row justify-content-center mt-3">
-                    <div class="col-md-2">
-                        <button class="btn btn-primary btn-block" type="submit" style="height: 47px;">Submit</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-     -->
-
-    <!-- Booking End -->
-
-
-    <!-- About Start -->
-    <div class="container-fluid py-5">
-        <div class="container pt-5">
-            <div class="row">
-                <div class="col-lg-6" style="min-height: 500px;">
-                    <div class="position-relative h-100">
-                        <img class="position-absolute w-100 h-100" src="img/NaviridE.png" style="object-fit: cover;">
-                    </div>
-                </div>
-                <div class="col-lg-6 pt-5 pb-lg-5">
-                    <div class="about-text bg-white p-4 p-lg-5 my-lg-5">
-                        <h6 class="text-primary text-uppercase" style="letter-spacing: 5px;">About Us</h6>
-                        <h1 class="mb-3">NaviRide – Smart Transit for Navi Mumbai</h1>
-                        <p>NaviRide is committed to enhancing the way you travel within Navi Mumbai, offering a seamless and modern public transport experience. Our platform ensures convenience, safety, and efficiency, helping you reach your destination
-                            effortlessly.
-                        </p>
-                        <div class="row mb-4">
-                            <div class="col-6">
-                                <img class="img-fluid" src="img/3.png" alt="">
-                            </div>
-                            <div class="col-6">
-                                <img class="img-fluid" src="img/2.jpg" alt="">
-                            </div>
-                        </div>
-                        <a href="package.html" class="btn btn-primary mt-1">Book Now</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- About End -->
-
-
-    <!-- Feature Start -->
-    <div class="container-fluid pb-5">
-        <div class="container pb-5">
-            <div class="row text-center">
-                <div class="col-md-4 mb-4 mb-lg-0">
-                    <div class="d-flex justify-content-center align-items-center" style="height: 200px;">
-                        <i class="fa fa-3x fa-money-check-alt text-primary"></i>
-                        <div class="ml-4 text-left">
-                            <h5 class="font-weight-bold">Affordable Travel</h5>
-                            <p class="m-0">Enjoy modern, efficient public transport at low, budget-friendly prices with NaviRide. Quality service at an unbeatable value.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4 mb-lg-0">
-                    <div class="d-flex justify-content-center align-items-center" style="height: 200px;">
-                        <i class="fa fa-3x fa-award text-primary"></i>
-                        <div class="ml-4 text-left">
-                            <h5 class="font-weight-bold">Best Services</h5>
-                            <p class="m-0">Experience top-tier service with NaviRide, ensuring punctuality, comfort, and reliability on every journey. Travel with confidence, knowing you're in the best hands.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4 mb-lg-0">
-                    <div class="d-flex justify-content-center align-items-center" style="height: 200px;">
-                        <i class="fa fa-3x fa-globe text-primary"></i>
-                        <div class="ml-4 text-left">
-                            <h5 class="font-weight-bold">Connecting You Everywhere</h5>
-                            <p class="m-0">With NaviRide, enjoy seamless travel solutions that extend beyond local boundaries, offering expansive coverage and reliable service wherever you go.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <!-- Login Form -->
+        <div id="login-form">
+            <input type="password" id="admin-password" placeholder="Admin Password">
+            <button onclick="authenticateAdmin()">Login as Admin</button>
         </div>
     </div>
 
-    <!-- Feature End -->
+    <script>
+        const ws = new WebSocket('ws://https://community-chats.onrender.com/');
+        let isAuthenticated = false;
 
+        // Debugging: Log WebSocket events
+        ws.onopen = () => {
+            console.log('WebSocket connection established');
+        };
 
-    <!-- Destination Start -->
-    <!-- Panvel Modal -->
-    <div class="container-fluid py-5">
-        <div class="container pt-5 pb-3">
-            <div class="text-center mb-3 pb-3">
-                <h6 class="text-primary text-uppercase" style="letter-spacing: 5px;">Destination</h6>
-                <h1>Explore Top Destinations in Navi Mumbai</h1>
-            </div>
-            <div class="row">
-                <!-- Panvel -->
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="destination-item position-relative overflow-hidden mb-2">
-                        <img class="img-fluid equal-size" src="img/2.jpg" alt="">
-                        <a class="destination-overlay text-white text-decoration-none" href="#" data-bs-toggle="modal" data-bs-target="#panvelModal">
-                            <h5 class="text-white">Panvel</h5>
-                            <span>5 Must-Visit Spots</span>
-                        </a>
-                    </div>
-                </div>
+        ws.onerror = (error) => {
+            console.error('WebSocket error:', error);
+        };
 
-                <!-- Vashi -->
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="destination-item position-relative overflow-hidden mb-2">
-                        <img class="img-fluid equal-size" src="img/3.png" alt="">
-                        <a class="destination-overlay text-white text-decoration-none" href="#" data-bs-toggle="modal" data-bs-target="#vashiModal">
-                            <h5 class="text-white">Vashi</h5>
-                            <span>5 Must-Visit Spots</span>
-                        </a>
-                    </div>
-                </div>
+        ws.onclose = () => {
+            console.log('WebSocket connection closed');
+        };
 
-                <!-- Karjat -->
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="destination-item position-relative overflow-hidden mb-2">
-                        <img class="img-fluid equal-size" src="img/4.jpg" alt="">
-                        <a class="destination-overlay text-white text-decoration-none" href="#" data-bs-toggle="modal" data-bs-target="#karjatModal">
-                            <h5 class="text-white">Karjat</h5>
-                            <span>5 Must-Visit Spots</span>
-                        </a>
-                    </div>
-                </div>
+        ws.onmessage = (event) => {
+            console.log('Message received:', event.data);
+            const data = JSON.parse(event.data);
 
-                <!-- Khopoli -->
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="destination-item position-relative overflow-hidden mb-2">
-                        <img class="img-fluid equal-size" src="img/6.jpg" alt="">
-                        <a class="destination-overlay text-white text-decoration-none" href="#" data-bs-toggle="modal" data-bs-target="#khopoliModal">
-                            <h5 class="text-white">Khopoli</h5>
-                            <span>5 Must-Visit Spots</span>
-                        </a>
-                    </div>
-                </div>
+            if (data.type === 'auth-response') {
+                if (data.success) {
+                    isAuthenticated = true;
+                    document.getElementById('admin-controls').style.display = 'block';
+                    document.getElementById('login-form').style.display = 'none';
+                    console.log('Admin authenticated');
+                } else {
+                    alert('Authentication failed');
+                }
+            } else if (data.type === 'history') {
+                // Display message history
+                data.messages.forEach(message => displayMessage(message));
+            } else if (data.type === 'message') {
+                // Display new message
+                displayMessage(data.content);
+            }
+        };
 
-                <!-- Sewri (Seawoods) -->
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="destination-item position-relative overflow-hidden mb-2">
-                        <img class="img-fluid equal-size" src="img/7.jpg" alt="">
-                        <a class="destination-overlay text-white text-decoration-none" href="#" data-bs-toggle="modal" data-bs-target="#sewriModal">
-                            <h5 class="text-white">Sewri (Seawoods)</h5>
-                            <span>5 Must-Visit Spots</span>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Kharghar -->
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="destination-item position-relative overflow-hidden mb-2">
-                        <img class="img-fluid equal-size" src="img/9.jpg" alt="">
-                        <a class="destination-overlay text-white text-decoration-none" href="#" data-bs-toggle="modal" data-bs-target="#khargharModal">
-                            <h5 class="text-white">Kharghar</h5>
-                            <span>5 Must-Visit Spots</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modals for Each Destination -->
-    <div class="modal fade" id="panvelModal" tabindex="-1" aria-labelledby="panvelModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="panvelModalLabel">5 Must-Visit Spots in Panvel</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <ul>
-                        <li>Karnala Fort</li>
-                        <li>Ballaleshwar Pali</li>
-                        <li>Gadeshwar Dam</li>
-                        <li>Adai Waterfalls</li>
-                        <li>Kalavantin Durg</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="vashiModal" tabindex="-1" aria-labelledby="vashiModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="vashiModalLabel">5 Must-Visit Spots in Vashi</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <ul>
-                        <li>Inorbit Mall</li>
-                        <li>Sagar Vihar</li>
-                        <li>Vashi Creek</li>
-                        <li>Mini Seashore</li>
-                        <li>Raghuleela Mall</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="karjatModal" tabindex="-1" aria-labelledby="karjatModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="karjatModalLabel">5 Must-Visit Spots in Karjat</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <ul>
-                        <li>Bhivpuri Waterfall</li>
-                        <li>Kondana Caves</li>
-                        <li>Peth Fort</li>
-                        <li>Ulhas Valley</li>
-                        <li>Kothaligad</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal fade" id="khopoliModal" tabindex="-1" aria-labelledby="khopoliModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="khopoliModalLabel">5 Must-Visit Spots in Khopoli</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <ul>
-                        <li>Imagica Theme Park</li>
-                        <li>Zenith Waterfall</li>
-                        <li>Duke’s Nose</li>
-                        <li>Kune Falls</li>
-                        <li>Shri Varadvinayak Temple</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="seawoodsModal" tabindex="-1" aria-labelledby="seawoodsModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="seawoodsModalLabel">5 Must-Visit Spots in Seawoods</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <ul>
-                        <li>Seawoods Grand Central Mall</li>
-                        <li>Seawoods Lake</li>
-                        <li>Jewel of Navi Mumbai</li>
-                        <li>Parsik Hill</li>
-                        <li>Nerul Flamingo Point</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <!-- Kharghar Modal -->
-    <div class="modal fade" id="khargharModal" tabindex="-1" aria-labelledby="khargharModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="khargharModalLabel">5 Must-Visit Spots in Kharghar</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <ul>
-                        <li>Central Park</li>
-                        <li>Pandavkada Waterfalls</li>
-                        <li>ISKCON Temple</li>
-                        <li>Nerul Balaji Temple</li>
-                        <li>Kharghar Hills Valley</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Add modals for Khopoli, Sewri (Seawoods), and Kharghar here with similar structure -->
-
-    <style>
-        .equal-size {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
+        function authenticateAdmin() {
+            const password = document.getElementById('admin-password').value;
+            if (password) {
+                console.log('Sending authentication request');
+                ws.send(JSON.stringify({
+                    type: 'auth',
+                    password: password
+                }));
+            }
         }
-    </style>
 
-    <!-- Bootstrap JS (Required for Modals) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Destination Start -->
+        function sendMessage() {
+            if (!isAuthenticated) {
+                console.error('Not authenticated');
+                return;
+            }
 
+            const messageInput = document.getElementById('message-input');
+            const message = messageInput.value.trim();
 
-    <!-- Service Start -->
-    <div class="container-fluid py-5">
-        <div class="container pt-5 pb-3">
-            <div class="text-center mb-3 pb-3">
-                <h6 class="text-primary text-uppercase" style="letter-spacing: 5px;">Services</h6>
-                <h1>Exceptional Service, Every Journey</h1>
-            </div>
-            <div class="row">
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="service-item bg-white text-center mb-2 py-5 px-4">
-                        <i class="fa fa-2x fa-clock mx-auto mb-4"></i>
-                        <h5 class="mb-2">Real-Time Bus Tracking</h5>
-                        <p class="m-0">tay updated on bus arrivals with live tracking for a smooth and timely commute.</p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="service-item bg-white text-center mb-2 py-5 px-4">
-                        <i class="fa fa-2x fa-ticket-alt mx-auto mb-4"></i>
-                        <h5 class="mb-2">Ticket Booking</h5>
-                        <p class="m-0">Book your tickets in seconds with our easy-to-use platform. No hassle, no queues—just a smooth booking experience at your fingertips.</p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="service-item bg-white text-center mb-2 py-5 px-4">
-                        <i class="fa fa-2x fa-headset mx-auto mb-4"></i>
-                        <h5 class="mb-2">Passenger Support</h5>
-                        <p class="m-0"> 24/7 customer service to assist with any inquiries or issues on your journey.</p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="service-item bg-white text-center mb-2 py-5 px-4">
-                        <i class="fa fa-2x fa-shield-alt mx-auto mb-4"></i>
-                        <h5 class="mb-2">Enhanced Passenger Safety</h5>
-                        <p class="m-0">Advanced monitoring systems to ensure a safe and secure journey for every traveler.</p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="service-item bg-white text-center mb-2 py-5 px-4">
-                        <i class="fa fa-2x fa-qrcode mx-auto mb-4"></i>
-                        <h5 class="mb-2">Quick and Secure Ticketing</h5>
-                        <p class="m-0">Skip the lines and enjoy a secure, fast, and hassle-free ticket booking process through our digital platform.</p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="service-item bg-white text-center mb-2 py-5 px-4">
-                        <i class="fa fa-2x fa-calendar-check mx-auto mb-4"></i>
-                        <h5 class="mb-2">Book Your Ride, Anytime</h5>
-                        <p class="m-0">You can book your bus tickets anytime, anywhere—ensuring your travel is always just a click away.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Service End -->
+            if (message) {
+                console.log('Sending message:', message);
+                ws.send(JSON.stringify({
+                    type: 'message',
+                    content: {
+                        type: 'text',
+                        data: message,
+                        timestamp: new Date().toISOString()
+                    }
+                }));
+                messageInput.value = '';
+            }
+        }
 
+        function uploadMedia() {
+            if (!isAuthenticated) {
+                console.error('Not authenticated');
+                return;
+            }
 
-    <!-- Packages Start -->
-    <div class="container-fluid py-5">
-        <div class="container pt-5 pb-3">
-            <div class="text-center mb-3 pb-3">
-                <h6 class="text-primary text-uppercase" style="letter-spacing: 5px;">Schedule</h6>
-                <h1>Bus Timetable</h1>
-            </div>
-            <style>
-                table {
-                    width: 100%;
-                    border-collapse: collapse;
-                    margin: 20px 0;
-                }
-                
-                th,
-                td {
-                    border: 1px solid #ddd;
-                    padding: 8px;
-                    text-align: left;
-                }
-                
-                th {
-                    background-color: #f2f2f2;
-                }
-                
-                tr:nth-child(even) {
-                    background-color: #f9f9f9;
-                }
-            </style>
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Route No.</th>
-                            <th>From</th>
-                            <th>To</th>
-                            <th>Frequency</th>
-                            <th>First Bus</th>
-                            <th>Last Bus</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>101</td>
-                            <td>Khopoli</td>
-                            <td>Karjat</td>
-                            <td>Every 15 mins</td>
-                            <td>06:00 AM</td>
-                            <td>10:00 PM</td>
-                        </tr>
-                        <tr>
-                            <td>102</td>
-                            <td>Karjat</td>
-                            <td>Khopoli</td>
-                            <td>Every 20 mins</td>
-                            <td>05:30 AM</td>
-                            <td>09:30 PM</td>
-                        </tr>
-                        <tr>
-                            <td>103</td>
-                            <td>Belapur</td>
-                            <td>Shedung</td>
-                            <td>Every 30 mins</td>
-                            <td>06:15 AM</td>
-                            <td>10:15 PM</td>
-                        </tr>
-                        <tr>
-                            <td>104</td>
-                            <td>Shedung</td>
-                            <td>Belapur</td>
-                            <td>Every 20 mins</td>
-                            <td>05:45 AM</td>
-                            <td>09:45 PM</td>
-                        </tr>
-                        <tr>
-                            <td>105</td>
-                            <td>Nerul</td>
-                            <td>Vashi</td>
-                            <td>Every 10 mins</td>
-                            <td>06:00 AM</td>
-                            <td>11:00 PM</td>
-                        </tr>
-                        <tr>
-                            <td>106</td>
-                            <td>Vashi</td>
-                            <td>Nerul</td>
-                            <td>Every 15 mins</td>
-                            <td>06:30 AM</td>
-                            <td>10:30 PM</td>
-                        </tr>
-                        <tr>
-                            <td>107</td>
-                            <td>Kharghar</td>
-                            <td>Airoli</td>
-                            <td>Every 25 mins</td>
-                            <td>07:00 AM</td>
-                            <td>10:30 PM</td>
-                        </tr>
-                        <tr>
-                            <td>108</td>
-                            <td>Airoli</td>
-                            <td>Kharghar</td>
-                            <td>Every 30 mins</td>
-                            <td>07:15 AM</td>
-                            <td>11:00 PM</td>
-                        </tr>
-                        <tr>
-                            <td>109</td>
-                            <td>Kopar Khairane</td>
-                            <td>Juinagar</td>
-                            <td>Every 20 mins</td>
-                            <td>06:00 AM</td>
-                            <td>10:00 PM</td>
-                        </tr>
-                        <tr>
-                            <td>110</td>
-                            <td>Juinagar</td>
-                            <td>Kopar Khairane</td>
-                            <td>Every 25 mins</td>
-                            <td>06:30 AM</td>
-                            <td>10:30 PM</td>
-                        </tr>
-                        <tr>
-                            <td>111</td>
-                            <td>Seawoods</td>
-                            <td>Khandeshwar</td>
-                            <td>Every 15 mins</td>
-                            <td>05:45 AM</td>
-                            <td>09:45 PM</td>
-                        </tr>
-                        <tr>
-                            <td>112</td>
-                            <td>Khandeshwar</td>
-                            <td>Seawoods</td>
-                            <td>Every 30 mins</td>
-                            <td>06:00 AM</td>
-                            <td>10:00 PM</td>
-                        </tr>
-                        <tr>
-                            <td>113</td>
-                            <td>Ulwe</td>
-                            <td>Taloja</td>
-                            <td>Every 20 mins</td>
-                            <td>07:00 AM</td>
-                            <td>09:30 PM</td>
-                        </tr>
-                        <tr>
-                            <td>114</td>
-                            <td>Taloja</td>
-                            <td>Ulwe</td>
-                            <td>Every 30 mins</td>
-                            <td>07:15 AM</td>
-                            <td>10:00 PM</td>
-                        </tr>
-                        <tr>
-                            <td>115</td>
-                            <td>Dronagiri</td>
-                            <td>New Panvel</td>
-                            <td>Every 30 mins</td>
-                            <td>06:15 AM</td>
-                            <td>10:15 PM</td>
-                        </tr>
-                        <tr>
-                            <td>116</td>
-                            <td>New Panvel</td>
-                            <td>Dronagiri</td>
-                            <td>Every 15 mins</td>
-                            <td>06:00 AM</td>
-                            <td>11:00 PM</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            const fileInput = document.getElementById('media-upload');
+            const files = fileInput.files;
 
-            <h3>Important Notes:</h3>
-            <ul>
-                <li>Schedules may vary on weekends and holidays</li>
-                <li>Timings subject to change due to traffic conditions</li>
-            </ul>
-        </div>
-    </div>
+            if (files.length === 0) {
+                alert('Please select a file to upload.');
+                return;
+            }
 
-    <!-- Packages End -->
+            for (let file of files) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const base64Data = event.target.result;
+                    console.log('Sending media file:', file.name);
+                    ws.send(JSON.stringify({
+                        type: 'message',
+                        content: {
+                            type: file.type.startsWith('image') ? 'image' : 'video',
+                            data: base64Data,
+                            timestamp: new Date().toISOString()
+                        }
+                    }));
+                };
+                reader.onerror = (error) => {
+                    console.error('Error reading file:', error);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
 
+        function displayMessage(message) {
+            const chatMessages = document.getElementById('chat-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message';
 
-    <!-- Registration Start -->
-    <div class="container-fluid bg-registration py-5" style="margin: 90px 0;">
-        <div class="container py-5">
-            <div class="row align-items-center">
-                <div class="col-lg-7 mb-5 mb-lg-0">
-                    <div class="mb-4">
-                        <h6 class="text-primary text-uppercase" style="letter-spacing: 5px;">Mega Offer</h6>
-                        <h1 class="text-white"><span class="text-primary">30% OFF</span> For Trip</h1>
-                    </div>
-                    <p class="text-white">Enjoy a 30% discount on your next trip! Whether for adventure, relaxation, or culture, this limited-time offer makes travel more affordable. Plus, get exclusive benefits like free insurance, hotel stays, meals, and more for a rewarding
-                        experience.
-                    </p>
-                    <ul class="list-inline text-white m-0">
-                        <li class="py-2"><i class="fa fa-check text-primary mr-3"></i>Free Meals – Enjoy meals included in the package.</li>
-                        <li class="py-2"><i class="fa fa-check text-primary mr-3"></i>Priority Destinations – Access to exclusive locations.</li>
-                        <li class="py-2"><i class="fa fa-check text-primary mr-3"></i>Expert Guides – Learn from knowledgeable tour guides.</li>
-                    </ul>
-                </div>
-                <div class="visme_d" data-title="Expert Blog Subscription" data-url="8rgrp3ye-expert-blog-subscription" data-NaviRide="forms" data-full-page="false" data-min-height="500px" data-form-id="112532"></div>
-                <script src="https://static-bundles.visme.co/forms/vismeforms-embed.js"></script>
-            </div>
-        </div>
-    </div>
+            let content;
+            if (message.type === 'text') {
+                content = document.createElement('p');
+                content.textContent = message.data;
+            } else if (message.type === 'image') {
+                content = document.createElement('img');
+                content.src = message.data;
+                content.className = 'media-preview';
+            } else if (message.type === 'video') {
+                content = document.createElement('video');
+                content.src = message.data;
+                content.className = 'media-preview';
+                content.controls = true;
+            }
 
-    <!-- Registration End -->
+            const timestamp = document.createElement('small');
+            timestamp.textContent = new Date(message.timestamp).toLocaleString();
 
-
-    <!-- Team Start -->
-    <div class="container-fluid py-5">
-        <div class="container pt-5 pb-3">
-            <div class="text-center mb-3 pb-3">
-                <h6 class="text-primary text-uppercase" style="letter-spacing: 5px;">The Visionary Squad</h6>
-                <h1>Project Teammates</h1>
-            </div>
-            <!-- Modified row with row-cols classes -->
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5">
-                <!-- Team Member 1 -->
-                <div class="col pb-1">
-                    <div class="team-item bg-white mb-4">
-                        <div class="team-img position-relative overflow-hidden">
-                            <img class="img-fluid w-100" src="Team/Parth.jpeg" alt="">
-                            <div class="team-social">
-                                <a class="btn btn-outline-primary btn-square" href="https://www.linkedin.com/in/divyansh-singh-4a993436b?trk=contact-info" target="_blank">
-                                    <i class="fab fa-linkedin-in"></i>
-                                </a>
-
-                            </div>
-                        </div>
-                        <div class="text-center py-4">
-                            <h5 class="text-truncate">Parth Singh</h5>
-                            <p class="m-0"></p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Team Member 2 -->
-                <div class="col pb-1">
-                    <div class="team-item bg-white mb-4">
-                        <div class="team-img position-relative overflow-hidden">
-                            <img class="img-fluid w-100" src="Team/arbaz.jpeg" alt="">
-                            <div class="team-social">
-                                <a class="btn btn-outline-primary btn-square" href="https://www.linkedin.com/in/pradnya-pawar-71b796397/" target="_blank">
-                                    <i class="fab fa-linkedin-in"></i>
-                                </a>
-
-                                <!-- Social links -->
-                            </div>
-                        </div>
-                        <div class="text-center py-4">
-                            <h5 class="text-truncate">Arbaz Ansari</h5>
-                            <p class="m-0"></p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Team Member 3 -->
-                <div class="col pb-1">
-                    <div class="team-item bg-white mb-4">
-                        <div class="team-img position-relative overflow-hidden">
-                            <img class="img-fluid w-100" src="Team/Gaurang Chavan.jpeg" alt="">
-                            <div class="team-social">
-                                <a class="btn btn-outline-primary btn-square" href="https://www.linkedin.com/in/prathmesh-patil-a0494a328/" target="_blank">
-                                    <i class="fab fa-linkedin-in"></i>
-                                </a>
-                                <!-- Social links -->
-                            </div>
-                        </div>
-                        <div class="text-center py-4">
-                            <h5 class="text-truncate">Gaurang Chavan</h5>
-                            <p class="m-0"></p>
-
-                 
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Team End -->
-
-
-    <!-- Testimonial Start -->
-    <!-- <div class="container-fluid py-5">
-        <div class="container py-5">
-            <div class="text-center mb-3 pb-3">
-                <h6 class="text-primary text-uppercase" style="letter-spacing: 5px;">Testimonial</h6>
-                <h1>What Say Our Clients</h1>
-            </div>
-            <div class="owl-carousel testimonial-carousel">
-                <div class="text-center pb-4">
-                    <img class="img-fluid mx-auto" src="img/testimonial-1.jpg" style="width: 100px; height: 100px;" >
-                    <div class="testimonial-text bg-white p-4 mt-n5">
-                        <p class="mt-5">Dolor et eos labore, stet justo sed est sed. Diam sed sed dolor stet amet eirmod eos labore diam
-                        </p>
-                        <h5 class="text-truncate">Client Name</h5>
-                        <span>Profession</span>
-                    </div>
-                </div>
-                <div class="text-center">
-                    <img class="img-fluid mx-auto" src="img/testimonial-2.jpg" style="width: 100px; height: 100px;" >
-                    <div class="testimonial-text bg-white p-4 mt-n5">
-                        <p class="mt-5">Dolor et eos labore, stet justo sed est sed. Diam sed sed dolor stet amet eirmod eos labore diam
-                        </p>
-                        <h5 class="text-truncate">Client Name</h5>
-                        <span>Profession</span>
-                    </div>
-                </div>
-                <div class="text-center">
-                    <img class="img-fluid mx-auto" src="img/testimonial-3.jpg" style="width: 100px; height: 100px;" >
-                    <div class="testimonial-text bg-white p-4 mt-n5">
-                        <p class="mt-5">Dolor et eos labore, stet justo sed est sed. Diam sed sed dolor stet amet eirmod eos labore diam
-                        </p>
-                        <h5 class="text-truncate">Client Name</h5>
-                        <span>Profession</span>
-                    </div>
-                </div>
-                <div class="text-center">
-                    <img class="img-fluid mx-auto" src="img/testimonial-4.jpg" style="width: 100px; height: 100px;" >
-                    <div class="testimonial-text bg-white p-4 mt-n5">
-                        <p class="mt-5">Dolor et eos labore, stet justo sed est sed. Diam sed sed dolor stet amet eirmod eos labore diam
-                        </p>
-                        <h5 class="text-truncate">Client Name</h5>
-                        <span>Profession</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> -->
-    <!-- Testimonial End -->
-
-
-    <!-- Blog Start -->
-
-    <!-- Blog End -->
-
-
-    <!-- Footer Start -->
-    <div class="container-fluid bg-dark text-white-50 py-5 px-sm-3 px-lg-5" style="margin-top: 90px;">
-        <div class="row pt-5">
-            <div class="col-lg-3 col-md-6 mb-5">
-                <a href="" class="navbar-brand">
-                    <h1 class="text-primary"><span class="text-white">Navi</span>Ride</h1>
-                </a>
-                <p> NaviRide is committed to enhancing the way you travel within Navi Mumbai, offering a seamless and modern public transport experience. Our platform ensures convenience, safety, and efficiency, helping you reach your destination effortlessly.</p>
-                <h6 class="text-white text-uppercase mt-4 mb-3" style="letter-spacing: 5px;">Follow Us</h6>
-                <div class="d-flex justify-content-start">
-                    <a class="btn btn-outline-primary btn-square mr-2" href="#"><i class="fab fa-twitter"></i></a>
-                    <a class="btn btn-outline-primary btn-square mr-2" href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a class="btn btn-outline-primary btn-square mr-2" href="#"><i class="fab fa-linkedin-in"></i></a>
-                    <a class="btn btn-outline-primary btn-square" href="#"><i class="fab fa-instagram"></i></a>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 mb-5">
-                <h5 class="text-white text-uppercase mb-4" style="letter-spacing: 5px;">Our Services</h5>
-                <div class="d-flex flex-column justify-content-start">
-                    <a class="text-white-50 mb-2" href="about.html"><i class="fa fa-angle-right mr-2"></i>About</a>
-                    <a class="text-white-50 mb-2" href="destination.html"><i class="fa fa-angle-right mr-2"></i>Destination</a>
-                    <a class="text-white-50 mb-2" href="service.html"><i class="fa fa-angle-right mr-2"></i>Services</a>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 mb-5">
-                <h5 class="text-white text-uppercase mb-4" style="letter-spacing: 5px;">Usefull Links</h5>
-                <div class="d-flex flex-column justify-content-start">
-                    <a class="text-white-50 mb-2" href="about.html"><i class="fa fa-angle-right mr-2"></i>About</a>
-                    <a class="text-white-50 mb-2" href="destination.html"><i class="fa fa-angle-right mr-2"></i>Destination</a>
-                    <a class="text-white-50 mb-2" href="service.html"><i class="fa fa-angle-right mr-2"></i>Services</a>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 mb-5">
-                <h5 class="text-white text-uppercase mb-4" style="letter-spacing: 5px;">Contact Us</h5>
-                <p><i class="fa fa-map-marker-alt mr-2"></i>Panvel,Shedung,Navi Mumbai</p>
-                <p><i class="fa fa-phone-alt mr-2"></i>+91 9136790046</p>
-                <p><i class="fa fa-envelope mr-2"></i>navirideinfo@gmail.com</p>
-                <h6 class="text-white text-uppercase mt-4 mb-3" style="letter-spacing: 5px;">Newsletter</h6>
-                <div class="w-100">
-                    <div class="input-group">
-                        <input type="text" class="form-control border-light" style="padding: 25px;" placeholder="Your Email">
-                        <div class="input-group-append">
-                            <button class="btn btn-primary px-3">Sign Up</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="container-fluid bg-dark text-white border-top py-4 px-sm-3 px-md-5" style="border-color: rgba(256, 256, 256, .1) !important;">
-        <div class="row">
-            <div class="col-lg-6 text-center text-md-left mb-3 mb-md-0">
-                <p class="m-0 text-white-50">Copyright &copy; <a href="#">NaviRide</a>. All Rights Reserved.</a>
-                </p>
-            </div>
-
-
-            </script>
-            <div class="col-lg-6 text-center text-md-right">
-                <p class="m-0 text-white-50">Designed by Parth Singh></p>
-            </div>
-        </div>
-    </div>
-    <!-- Footer End -->
-
-
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="fa fa-angle-double-up"></i></a>
-
-
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="lib/tempusdominus/js/moment.min.js"></script>
-    <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
-    <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
-
-    <!-- Contact Javascript File -->
-    <script src="mail/jqBootstrapValidation.min.js"></script>
-    <script src="mail/contact.js"></script>
-
-    <!-- Template Javascript -->
-    <script src="js/main.js"></script>
+            messageDiv.appendChild(content);
+            messageDiv.appendChild(timestamp);
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+    </script>
 </body>
 
 </html>
